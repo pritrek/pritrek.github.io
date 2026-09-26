@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PriTrek – Private Mileage Tracker</title>
+  <meta name="description" content="Private mileage tracker: your trips stay on your phone and in your own Google Drive, never with us. Export a tax-ready logbook in the format you need.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f6f7f2">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0c1512">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="PriTrek">
+  <meta property="og:title" content="PriTrek – Private Mileage Tracker">
+  <meta property="og:description" content="Your trips stay on your phone and in your own Google Drive, never with us. Export a tax-ready mileage logbook in the format you need.">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230f6e50'/%3E%3Cpath d='M9.5 22.5c0-5.5 13-4 13-12' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-dasharray='.01 4.6'/%3E%3Ccircle cx='9.5' cy='22.5' r='3.2' fill='%23fff'/%3E%3Ccircle cx='22.5' cy='10.5' r='3.6' fill='%23f4b63f'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --bg: #f6f7f2;
+      --surface: #ffffff;
+      --surface-2: #edf1eb;
+      --ink: #11261f;
+      --muted: #54645d;
+      --line: #dfe5dd;
+      --line-strong: #c3cdc5;
+      --brand: #0f6e50;
+      --brand-hover: #0b5a41;
+      --on-brand: #ffffff;
+      --brand-soft: #e1f0e7;
+      --brand-text: #0b5a41;
+      --accent: #f4b63f;
+      --mark: rgb(244 182 63 / .45);
+      --dot: rgb(17 38 31 / .11);
+      --band: #0f3a2c;
+      --band-ink: #eef5f1;
+      --band-muted: #b3cabf;
+      --band-line: rgb(255 255 255 / .14);
+      --band-line-strong: rgb(255 255 255 / .28);
+      --band-card: rgb(255 255 255 / .05);
+      --biz: #0f6e50; --biz-bg: #dff1e6; --biz-ink: #0b5a41;
+      --com: #3f73b8; --com-bg: #e3ecf8; --com-ink: #1f4f8f;
+      --pri: #d99a2b; --pri-bg: #f7ecd6; --pri-ink: #75500f;
+      --shadow: 0 1px 2px rgb(17 38 31 / .06), 0 20px 44px -18px rgb(17 38 31 / .3);
+      --radius: 18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0c1512;
+        --surface: #131f1a;
+        --surface-2: #1a2a24;
+        --ink: #e6eee9;
+        --muted: #9db0a7;
+        --line: #22332c;
+        --line-strong: #34483f;
+        --brand: #3cc28c;
+        --brand-hover: #5ed3a3;
+        --on-brand: #04201a;
+        --brand-soft: #15342a;
+        --brand-text: #6fd8ab;
+        --mark: rgb(244 182 63 / .38);
+        --dot: rgb(230 238 233 / .08);
+        --band: #10271f;
+        --band-ink: #e6eee9;
+        --band-muted: #9fb7ac;
+        --band-line: rgb(255 255 255 / .1);
+        --band-line-strong: rgb(255 255 255 / .2);
+        --band-card: rgb(255 255 255 / .04);
+        --biz: #3cc28c; --biz-bg: #173a2d; --biz-ink: #86e0b9;
+        --com: #6f9fe0; --com-bg: #1a2c44; --com-ink: #a7c7f2;
+        --pri: #e5ad45; --pri-bg: #3a2d14; --pri-ink: #f0c979;
+        --shadow: 0 1px 2px rgb(0 0 0 / .5), 0 24px 48px -20px rgb(0 0 0 / .7);
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 400 1.0625rem/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, p, ul, figure, dl, dd { margin: 0; }
+    ul { padding: 0; list-style: none; }
+    h1, h2, h3 { line-height: 1.12; letter-spacing: -0.025em; text-wrap: balance; }
+    h1 { font-size: clamp(2.4rem, 1.6rem + 3.4vw, 3.75rem); font-weight: 800; letter-spacing: -0.04em; }
+    h2 { font-size: clamp(1.8rem, 1.35rem + 1.8vw, 2.6rem); font-weight: 800; }
+    h3 { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; }
+    p { text-wrap: pretty; }
+    a { color: inherit; }
+    :focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+
+    .wrap { width: min(100% - 2 * clamp(16px, 4vw, 32px), 1160px); margin-inline: auto; }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+    }
+    .skip {
+      position: absolute; left: 16px; top: -100px; z-index: 10;
+      padding: 10px 16px; border-radius: 10px;
+      background: var(--surface); color: var(--ink); box-shadow: var(--shadow);
+    }
+    .skip:focus { top: 16px; }
+
+    .icon {
+      width: 24px; height: 24px; flex: none;
+      fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 48px; padding: 0 22px; border: 1px solid transparent; border-radius: 999px;
+      background: var(--brand); color: var(--on-brand);
+      font-size: 1rem; font-weight: 700; text-decoration: none; white-space: nowrap;
+      transition: background-color .15s ease, border-color .15s ease;
+    }
+    .btn:hover { background: var(--brand-hover); }
+    .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line-strong); }
+    .btn-ghost:hover { background: var(--surface); }
+    .btn-sm { min-height: 40px; padding: 0 16px; font-size: .9375rem; }
+
+    .eyebrow {
+      font-size: .8125rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--brand-text);
+    }
+    .fineprint { font-size: .875rem; color: var(--muted); }
+    .nowrap { white-space: nowrap; }
+    .meta { display: block; font-size: .8125rem; color: var(--muted); }
+    .note { padding-left: 16px; border-left: 3px solid var(--accent); font-size: .9375rem; }
+    .section { padding: clamp(64px, 10vw, 120px) 0; }
+    .section-head { max-width: 680px; margin-bottom: clamp(36px, 5vw, 56px); }
+    .section-head h2 { margin-top: 12px; }
+    .section-head p:not(.eyebrow) { margin-top: 16px; color: var(--muted); }
+
+    /* Shared card chrome for the product mock-ups */
+    .card {
+      padding: 20px 22px 22px; border: 1px solid var(--line); border-radius: var(--radius);
+      background: var(--surface); box-shadow: var(--shadow);
+    }
+    @media (max-width: 480px) { .card { padding: 16px; } }
+    .card-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; }
+    .card-head strong { display: block; font-size: 1rem; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px 4px 8px; border-radius: 999px;
+      background: var(--biz-bg); color: var(--biz-ink);
+      font-size: .75rem; font-weight: 700; white-space: nowrap;
+    }
+    .badge .icon { width: 14px; height: 14px; stroke-width: 2.6; }
+
+    /* Dotted "map paper" behind the header and hero, fading out below */
+    body { position: relative; isolation: isolate; }
+    body::before {
+      content: ""; position: absolute; inset: 0 0 auto; height: 56rem; z-index: -1; pointer-events: none;
+      background-image: radial-gradient(var(--dot) 1.2px, transparent 1.4px);
+      background-size: 24px 24px;
+      -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent 95%);
+      mask-image: linear-gradient(to bottom, #000 35%, transparent 95%);
+    }
+
+    .site-header .wrap { display: flex; align-items: center; gap: 16px; min-height: 76px; }
+    .brand {
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--ink); text-decoration: none;
+      font-size: 1.375rem; font-weight: 800; letter-spacing: -0.035em;
+    }
+    .logo { width: 34px; height: 34px; flex: none; }
+    .site-nav { margin-left: auto; }
+    .site-nav ul { display: flex; gap: 2px; }
+    .site-nav a {
+      display: block; padding: 8px 12px; border-radius: 8px;
+      color: var(--muted); font-size: .9375rem; font-weight: 500; text-decoration: none;
+    }
+    .site-nav a:hover { color: var(--ink); background: var(--surface-2); }
+    @media (max-width: 800px) {
+      .site-nav { display: none; }
+      .site-header .btn { margin-left: auto; }
+    }
+
+    /* Hero */
+    .hero { padding: clamp(32px, 6vw, 72px) 0 clamp(56px, 8vw, 104px); }
+    .hero .wrap {
+      display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: clamp(40px, 6vw, 80px); align-items: center;
+    }
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px 6px 10px; border-radius: 999px;
+      background: var(--brand-soft); color: var(--brand-text);
+      font-size: .875rem; font-weight: 700;
+    }
+    .pill .icon { width: 16px; height: 16px; stroke-width: 2.2; }
+    .hero h1 { margin-top: 20px; }
+    .mark {
+      background: linear-gradient(transparent 60%, var(--mark) 60%, var(--mark) 92%, transparent 92%);
+      -webkit-box-decoration-break: clone; box-decoration-break: clone;
+    }
+    .lede { margin-top: 20px; max-width: 34em; color: var(--muted); font-size: clamp(1.0625rem, 1rem + .35vw, 1.25rem); }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .hero .fineprint { margin-top: 20px; }
+    @media (max-width: 960px) {
+      .hero .wrap { grid-template-columns: minmax(0, 1fr); }
+      .logbook { max-width: 600px; }
+    }
+    @media (max-width: 480px) { .actions .btn { flex: 1 1 auto; } }
+
+    /* Sample logbook */
+    .logbook { container-type: inline-size; }
+    .logbook table { width: 100%; margin-top: 8px; border-collapse: collapse; font-size: .875rem; line-height: 1.4; }
+    .logbook th {
+      padding: 12px 10px 8px; border-bottom: 1px solid var(--line);
+      color: var(--muted); font-size: .6875rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; text-align: left;
+    }
+    .logbook td { padding: 11px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    .logbook th:first-child, .logbook td:first-child { padding-left: 0; }
+    .logbook th:last-child, .logbook td:last-child { padding-right: 0; text-align: right; }
+    .logbook .date { white-space: nowrap; color: var(--muted); }
+    .route { display: block; font-weight: 600; }
+    .purpose { display: block; margin-top: 2px; color: var(--muted); font-size: .8125rem; }
+    .logbook .odo { text-align: right; white-space: nowrap; }
+    .logbook td.odo { color: var(--muted); font-family: var(--mono); font-size: .75rem; line-height: 1.55; }
+    .num { font-weight: 800; font-variant-numeric: tabular-nums; }
+    @container (max-width: 440px) { .odo { display: none; } }
+
+    .tag {
+      display: inline-block; margin-left: 4px; padding: 0 8px; border-radius: 999px;
+      font-size: .6875rem; font-weight: 700; line-height: 1.7; white-space: nowrap;
+    }
+    .tag.biz { background: var(--biz-bg); color: var(--biz-ink); }
+    .tag.com { background: var(--com-bg); color: var(--com-ink); }
+    .tag.pri { background: var(--pri-bg); color: var(--pri-ink); }
+
+    .bar { display: flex; gap: 3px; height: 8px; margin-top: 18px; }
+    .bar span { border-radius: 999px; }
+    .bar .biz { flex: 45; background: var(--biz); }
+    .bar .com { flex: 10; background: var(--com); }
+    .bar .pri { flex: 4; background: var(--pri); }
+    .totals { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; margin-top: 12px; font-size: .8125rem; }
+    .totals div { display: flex; align-items: baseline; gap: 6px; }
+    .totals dt { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
+    .totals dt::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+    .totals dd { font-weight: 700; font-variant-numeric: tabular-nums; }
+    .totals .biz { --c: var(--biz); }
+    .totals .com { --c: var(--com); }
+    .totals .pri { --c: var(--pri); }
+    .totals .share { margin-left: auto; }
+    .totals .share dt::before { display: none; }
+    .totals .share dd { color: var(--brand-text); font-size: 1rem; }
+    .backup {
+      display: flex; align-items: center; gap: 8px; margin-top: 16px; padding-top: 14px;
+      border-top: 1px solid var(--line); color: var(--muted); font-size: .8125rem;
+    }
+    .backup .icon { width: 18px; height: 18px; color: var(--brand-text); }
+    .backup strong { color: var(--ink); font-weight: 600; }
+
+    /* Privacy: where the data lives */
+    .band { background: var(--band); color: var(--band-ink); }
+    .band .eyebrow { color: var(--accent); }
+    .band .section-head p:not(.eyebrow) { color: var(--band-muted); }
+    .flow {
+      display: grid; align-items: stretch;
+      grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr) 64px minmax(0, 1fr);
+    }
+    .node { padding: 24px; border: 1px solid var(--band-line); border-radius: var(--radius); background: var(--band-card); }
+    .node.none { border-style: dashed; background: transparent; }
+    .node-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+    .node-icon {
+      display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px;
+      background: rgb(255 255 255 / .08);
+    }
+    .node h3 { margin-bottom: 6px; }
+    .node p { color: var(--band-muted); font-size: .9375rem; }
+    .chip { padding: 3px 10px; border-radius: 999px; font-size: .75rem; font-weight: 700; white-space: nowrap; }
+    .chip.ok { background: rgb(60 194 140 / .18); color: #8fe3bf; }
+    .chip.drive { background: rgb(111 159 224 / .2); color: #b1cdf4; }
+    .chip.none { background: rgb(244 182 63 / .16); color: #f6c766; }
+    .link { position: relative; display: grid; place-items: center; }
+    .link::before {
+      content: ""; position: absolute; top: 50%; left: 6px; right: 6px;
+      border-top: 2px dashed var(--band-line-strong);
+    }
+    .link span {
+      position: relative; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%;
+      border: 1px solid var(--band-line-strong); background: var(--band);
+    }
+    .link .icon { width: 18px; height: 18px; }
+    .link.cut span { color: #f6c766; }
+    @media (max-width: 860px) {
+      .flow { grid-template-columns: minmax(0, 1fr); max-width: 600px; }
+      .link { height: 56px; }
+      .link::before { top: 6px; bottom: 6px; left: 50%; right: auto; border-top: 0; border-left: 2px dashed var(--band-line-strong); }
+      .link .icon { transform: rotate(90deg); }
+    }
+
+    /* Record & export */
+    .export .wrap {
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(40px, 6vw, 88px); align-items: center;
+    }
+    .export h2 { margin-top: 12px; }
+    .export .copy p:not(.eyebrow) { max-width: 34em; margin-top: 20px; color: var(--muted); }
+    .template { max-width: 520px; }
+    .fields { margin-top: 10px; border-top: 1px solid var(--line); }
+    .fields li {
+      display: flex; align-items: center; gap: 12px;
+      padding: 9px 0; border-bottom: 1px solid var(--line); font-size: .9375rem;
+    }
+    .fields li::after {
+      content: ""; width: 10px; height: 15px; margin-left: auto; opacity: .9;
+      background: radial-gradient(circle, var(--line-strong) 1.4px, transparent 1.7px) 0 0 / 5px 5px;
+    }
+    .fields .off { color: var(--muted); }
+    .box { position: relative; flex: none; width: 20px; height: 20px; border: 1.5px solid var(--line-strong); border-radius: 6px; }
+    .fields .on .box { border-color: var(--brand); background: var(--brand); }
+    .fields .on .box::after {
+      content: ""; position: absolute; left: 5.5px; top: 2px; width: 5px; height: 10px;
+      border: solid var(--on-brand); border-width: 0 2px 2px 0; transform: rotate(45deg);
+    }
+    .settings { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .settings span { padding: 5px 10px; border-radius: 8px; background: var(--surface-2); color: var(--muted); font-size: .8125rem; }
+    .settings b { color: var(--ink); font-weight: 600; }
+    .template-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
+    .fake-btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 999px;
+      background: var(--brand); color: var(--on-brand); font-size: .875rem; font-weight: 700;
+    }
+    .fake-btn .icon { width: 16px; height: 16px; stroke-width: 2.4; }
+    @media (max-width: 860px) { .export .wrap { grid-template-columns: minmax(0, 1fr); } }
+
+    /* Early access */
+    .cta-section { padding-top: 0; }
+    .cta {
+      display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 48px; align-items: center;
+      padding: clamp(28px, 5vw, 56px); border-radius: 24px; background: var(--brand-soft);
+    }
+    .cta h2 { font-size: clamp(1.6rem, 1.25rem + 1.4vw, 2.25rem); }
+    .cta p { max-width: 36em; margin-top: 12px; color: var(--muted); }
+    .cta-actions { display: grid; justify-items: start; gap: 10px; }
+    .cta-actions .fineprint a { color: var(--brand-text); font-weight: 600; }
+    @media (max-width: 760px) { .cta { grid-template-columns: minmax(0, 1fr); } }
+
+    .site-footer { padding: 32px 0 40px; border-top: 1px solid var(--line); color: var(--muted); font-size: .9375rem; }
+    .site-footer .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; }
+    .footer-brand { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; }
+    .site-footer .brand { font-size: 1.125rem; }
+    .site-footer .logo { width: 26px; height: 26px; }
+    .footer-meta { display: grid; gap: 2px; }
+    .footer-meta a { color: var(--ink); }
+    @media (min-width: 761px) { .footer-meta { text-align: right; } }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="#top">
+        <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+          <rect width="32" height="32" rx="9" fill="#0f6e50"/>
+          <path d="M9.5 22.5c0-5.5 13-4 13-12" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-dasharray=".01 4.6"/>
+          <circle cx="9.5" cy="22.5" r="3.2" fill="#fff"/>
+          <circle cx="22.5" cy="10.5" r="3.6" fill="#f4b63f"/>
+        </svg>
+        PriTrek
+      </a>
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#export">Record &amp; export</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn-sm" href="mailto:hello@pritrek.com?subject=PriTrek%20early%20access">Early access</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap">
+        <div>
+          <p class="pill">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            Private Mileage Tracker
+          </p>
+          <h1 id="hero-title">Your trips <span class="mark">stay yours</span>.</h1>
+          <p class="lede">PriTrek records your trips for tax on your phone and backs them up to your own Google Drive — never to our servers. When it’s time to file, export your log in exactly the format you need.</p>
+          <div class="actions">
+            <a class="btn" href="mailto:hello@pritrek.com?subject=PriTrek%20early%20access">Get early access</a>
+            <a class="btn btn-ghost" href="#privacy">See where your data lives</a>
+          </div>
+          <p class="fineprint">For the self-employed, freelancers and anyone who drives their own car for work.</p>
+        </div>
+
+        <figure class="card logbook">
+          <figcaption class="card-head">
+            <span>
+              <strong>Mileage logbook</strong>
+              <span class="meta">21–22 Sep 2026 · Personal car</span>
+            </span>
+            <span class="badge">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+              On this phone
+            </span>
+          </figcaption>
+          <table>
+            <caption class="sr-only">Sample logbook entries</caption>
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Trip</th>
+                <th scope="col" class="odo">Odometer</th>
+                <th scope="col">Miles</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="date">21 Sep</td>
+                <td><span class="route">Home → Office</span><span class="purpose">Regular workplace <span class="tag com">Commute</span></span></td>
+                <td class="odo">41,208<br>41,218</td>
+                <td class="num">10</td>
+              </tr>
+              <tr>
+                <td class="date">21 Sep</td>
+                <td><span class="route">Office → Northfield Clinic</span><span class="purpose">Quarterly client review <span class="tag biz">Business</span></span></td>
+                <td class="odo">41,218<br>41,236</td>
+                <td class="num">18</td>
+              </tr>
+              <tr>
+                <td class="date">21 Sep</td>
+                <td><span class="route">Northfield Clinic → Harbour Supplies</span><span class="purpose">Collect project materials <span class="tag biz">Business</span></span></td>
+                <td class="odo">41,236<br>41,248</td>
+                <td class="num">12</td>
+              </tr>
+              <tr>
+                <td class="date">21 Sep</td>
+                <td><span class="route">Harbour Supplies → Home</span><span class="purpose">Return from supplier <span class="tag biz">Business</span></span></td>
+                <td class="odo">41,248<br>41,263</td>
+                <td class="num">15</td>
+              </tr>
+              <tr>
+                <td class="date">22 Sep</td>
+                <td><span class="route">Home → Town centre</span><span class="purpose">No purpose needed <span class="tag pri">Private</span></span></td>
+                <td class="odo">41,263<br>41,267</td>
+                <td class="num">4</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="bar" aria-hidden="true"><span class="biz"></span><span class="com"></span><span class="pri"></span></div>
+          <dl class="totals">
+            <div class="biz"><dt>Business</dt><dd>45 mi</dd></div>
+            <div class="com"><dt>Commute</dt><dd>10 mi</dd></div>
+            <div class="pri"><dt>Private</dt><dd>4 mi</dd></div>
+            <div class="share"><dt>Business use</dt><dd>76%</dd></div>
+          </dl>
+          <p class="backup">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 19H8a5 5 0 1 1 1.1-9.88A6 6 0 0 1 20.6 11 4 4 0 0 1 17.5 19z"/><path d="m9.5 14.5 2 2 3.5-3.5"/></svg>
+            <span><strong>Backed up</strong> to your Google Drive · just now</span>
+          </p>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section band" id="privacy" aria-labelledby="privacy-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Privacy &amp; security</p>
+          <h2 id="privacy-title">Your data lives with you, not with us</h2>
+          <p>A mileage log shows where you go, when and why. PriTrek keeps it only in places you control — so there’s nothing on our side to lose.</p>
+        </div>
+        <div class="flow">
+          <div class="node">
+            <div class="node-top">
+              <span class="node-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></span>
+              <span class="chip ok">Primary copy</span>
+            </div>
+            <h3>On your phone</h3>
+            <p>Every trip you record is stored locally on your device, so your logbook is always with you.</p>
+          </div>
+          <div class="link" aria-hidden="true">
+            <span><svg class="icon" viewBox="0 0 24 24"><path d="M4 8h15M15 4l4 4-4 4M20 16H5M9 12l-4 4 4 4"/></svg></span>
+          </div>
+          <div class="node">
+            <div class="node-top">
+              <span class="node-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 19H8a5 5 0 1 1 1.1-9.88A6 6 0 0 1 20.6 11 4 4 0 0 1 17.5 19z"/></svg></span>
+              <span class="chip drive">Private backup</span>
+            </div>
+            <h3>In your Google Drive</h3>
+            <p>Backups go to your own Google Drive — your account, not ours — so a new phone never means a lost log.</p>
+          </div>
+          <div class="link cut" aria-hidden="true">
+            <span><svg class="icon" viewBox="0 0 24 24"><path d="M7 7l10 10M17 7 7 17"/></svg></span>
+          </div>
+          <div class="node none">
+            <div class="node-top">
+              <span class="node-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="7" ry="2.5"/><path d="M5 5.5v13c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-13"/><path d="M5 12c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5"/><path d="M3 3l18 18"/></svg></span>
+              <span class="chip none">Nothing stored</span>
+            </div>
+            <h3>Not with PriTrek</h3>
+            <p>We don’t keep customer data. No PriTrek database of your trips means nothing to leak, sell or hand over.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section export" id="export" aria-labelledby="export-title">
+      <div class="wrap">
+        <div class="copy">
+          <p class="eyebrow">Record &amp; export</p>
+          <h2 id="export-title"><span class="nowrap">Tax-ready</span> records, exported your way</h2>
+          <p>PriTrek records what a tax mileage log typically needs: the date, start and destination, purpose, odometer readings and distance of every trip, and whether it was business or private.</p>
+          <p>When it’s time to file, customise the export — choose the fields, their order and formatting — so your log matches exactly what your tax office or accountant asks for.</p>
+          <p class="note">Requirements differ from country to country. PriTrek helps you keep complete records, but it isn’t tax advice — check what applies to you or ask your accountant.</p>
+        </div>
+
+        <figure class="card template">
+          <figcaption class="card-head">
+            <span>
+              <strong>Export template</strong>
+              <span class="meta">Tax logbook · 2026</span>
+            </span>
+            <span class="badge">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>
+              Custom format
+            </span>
+          </figcaption>
+          <ul class="fields">
+            <li class="on"><span class="box" aria-hidden="true"></span>Date</li>
+            <li class="on"><span class="box" aria-hidden="true"></span>Start &amp; destination</li>
+            <li class="on"><span class="box" aria-hidden="true"></span>Purpose of trip</li>
+            <li class="on"><span class="box" aria-hidden="true"></span>Odometer start / end</li>
+            <li class="on"><span class="box" aria-hidden="true"></span>Distance</li>
+            <li class="on"><span class="box" aria-hidden="true"></span>Business / private</li>
+            <li class="off"><span class="box" aria-hidden="true"></span>Vehicle <span class="sr-only">(not included)</span></li>
+            <li class="off"><span class="box" aria-hidden="true"></span>Notes <span class="sr-only">(not included)</span></li>
+          </ul>
+          <p class="settings">
+            <span>Date <b>DD/MM/YYYY</b></span>
+            <span>Distance <b>miles</b></span>
+            <span>Sort <b>oldest first</b></span>
+          </p>
+          <div class="template-foot">
+            <span class="meta">6 of 8 fields included</span>
+            <span class="fake-btn" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>
+              Export
+            </span>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section cta-section" id="early-access" aria-labelledby="cta-title">
+      <div class="wrap">
+        <div class="cta">
+          <div>
+            <h2 id="cta-title">Private by default. <span class="nowrap">Tax-ready</span> when you need it.</h2>
+            <p>PriTrek is getting ready for launch. Send us a note and we’ll let you know as soon as you can start logging.</p>
+          </div>
+          <div class="cta-actions">
+            <a class="btn" href="mailto:hello@pritrek.com?subject=PriTrek%20early%20access">Get early access</a>
+            <p class="fineprint">or write to <a href="mailto:hello@pritrek.com">hello@pritrek.com</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-brand">
+        <a class="brand" href="#top">
+          <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+            <rect width="32" height="32" rx="9" fill="#0f6e50"/>
+            <path d="M9.5 22.5c0-5.5 13-4 13-12" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-dasharray=".01 4.6"/>
+            <circle cx="9.5" cy="22.5" r="3.2" fill="#fff"/>
+            <circle cx="22.5" cy="10.5" r="3.6" fill="#f4b63f"/>
+          </svg>
+          PriTrek
+        </a>
+        <span>Private Mileage Tracker</span>
+      </div>
+      <div class="footer-meta">
+        <p>© 2026 PriTrek · <a href="mailto:hello@pritrek.com">hello@pritrek.com</a></p>
+        <p>This website uses no cookies and no trackers.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
