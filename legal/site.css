@@ -1,0 +1,91 @@
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff;
+  --fg: #1b1b1f;
+  --muted: #5f6368;
+  --link: #1a56db;
+  --rule: #e2e4e9;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121316;
+    --fg: #e6e7ea;
+    --muted: #9aa0a6;
+    --link: #8ab4ff;
+    --rule: #2c2f36;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+
+main {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2rem;
+}
+
+h1 {
+  font-size: 1.75rem;
+  line-height: 1.25;
+  margin: 1.5rem 0 0.25rem;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin: 2rem 0 0.5rem;
+}
+
+a {
+  color: var(--link);
+}
+
+ul {
+  padding-left: 1.25rem;
+}
+
+li {
+  margin: 0.4rem 0;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  font-size: 0.95rem;
+  padding: 0.25rem 0;
+}
+
+nav [aria-current] {
+  font-weight: 700;
+}
+
+nav.langs {
+  color: var(--muted);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.75rem;
+}
+
+.updated {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0 0 1.5rem;
+}
+
+footer {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 1rem 1rem 3rem;
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
