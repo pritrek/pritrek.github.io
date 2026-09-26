@@ -69,7 +69,7 @@ nav [aria-current] {
   font-weight: 700;
 }
 
-nav.langs {
+nav.docs {
   color: var(--muted);
   border-bottom: 1px solid var(--rule);
   padding-bottom: 0.75rem;
