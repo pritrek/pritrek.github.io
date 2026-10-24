@@ -13,7 +13,7 @@
   <meta property="og:title" content="Pritrek – Private Mileage Tracker">
   <meta property="og:description" content="Your trips stay on your phone and in your own Google Drive, never with us. Keep a tax-ready mileage logbook, sorted by business, commute and private.">
   <meta name="twitter:card" content="summary">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230f6e50'/%3E%3Cpath d='M9.5 22.5c0-5.5 13-4 13-12' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-dasharray='.01 4.6'/%3E%3Ccircle cx='9.5' cy='22.5' r='3.2' fill='%23fff'/%3E%3Ccircle cx='22.5' cy='10.5' r='3.6' fill='%23f4b63f'/%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%230F4D3A%22/%3E%3Cg transform=%22translate(50 50) scale(.74) translate(-51 -50)%22%3E%3Cpath d=%22M30 92 V38 A20 20 0 0 1 50 18 H52 A20 20 0 0 1 52 58 H30%22 fill=%22none%22 stroke=%22%233DDC97%22 stroke-width=%2223%22 stroke-linejoin=%22round%22/%3E%3Ccircle cx=%2252%22 cy=%2238%22 r=%225.5%22 fill=%22%23FFFFFF%22/%3E%3C/g%3E%3C/svg%3E">
   <style>
     :root {
       --bg: #f6f7f2;
@@ -23,12 +23,12 @@
       --muted: #54645d;
       --line: #dfe5dd;
       --line-strong: #c3cdc5;
-      --brand: #0f6e50;
-      --brand-hover: #0b5a41;
+      --brand: #0f4d3a;
+      --brand-hover: #0a3a2b;
       --on-brand: #ffffff;
       --brand-soft: #e1f0e7;
-      --brand-text: #0b5a41;
-      --accent: #f4b63f;
+      --brand-text: #0f4d3a;
+      --accent: #ffb938;
       --mark: rgb(244 182 63 / .45);
       --dot: rgb(17 38 31 / .11);
       --band: #0f3a2c;
@@ -54,7 +54,7 @@
         --muted: #9db0a7;
         --line: #22332c;
         --line-strong: #34483f;
-        --brand: #3cc28c;
+        --brand: #3ddc97;
         --brand-hover: #5ed3a3;
         --on-brand: #04201a;
         --brand-soft: #15342a;
@@ -169,7 +169,7 @@
       color: var(--ink); text-decoration: none;
       font-size: 1.375rem; font-weight: 800; letter-spacing: -0.035em;
     }
-    .logo { width: 34px; height: 34px; flex: none; }
+    .logo { width: auto; height: 34px; flex: none; }
     .site-nav { margin-left: auto; }
     .site-nav ul { display: flex; gap: 2px; }
     .site-nav a {
@@ -388,7 +388,7 @@
     .site-footer .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; }
     .footer-brand { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; }
     .site-footer .brand { font-size: 1.125rem; }
-    .site-footer .logo { width: 26px; height: 26px; }
+    .site-footer .logo { width: auto; height: 26px; }
     .footer-meta { display: grid; gap: 2px; }
     .footer-meta a { color: var(--ink); }
     @media (min-width: 761px) { .footer-meta { text-align: right; } }
@@ -400,12 +400,7 @@
   <header class="site-header">
     <div class="wrap">
       <a class="brand" href="#top">
-        <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
-          <rect width="32" height="32" rx="9" fill="#0f6e50"/>
-          <path d="M9.5 22.5c0-5.5 13-4 13-12" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-dasharray=".01 4.6"/>
-          <circle cx="9.5" cy="22.5" r="3.2" fill="#fff"/>
-          <circle cx="22.5" cy="10.5" r="3.6" fill="#f4b63f"/>
-        </svg>
+        <picture><source media="(prefers-color-scheme: dark)" srcset="/assets/logo/pritrek-mark-reverse.svg"><img class="logo" src="/assets/logo/pritrek-mark.svg" alt="" width="30" height="34"></picture>
         Pritrek
       </a>
       <nav class="site-nav" aria-label="Main">
@@ -723,12 +718,7 @@
     <div class="wrap">
       <div class="footer-brand">
         <a class="brand" href="#top">
-          <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
-            <rect width="32" height="32" rx="9" fill="#0f6e50"/>
-            <path d="M9.5 22.5c0-5.5 13-4 13-12" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-dasharray=".01 4.6"/>
-            <circle cx="9.5" cy="22.5" r="3.2" fill="#fff"/>
-            <circle cx="22.5" cy="10.5" r="3.6" fill="#f4b63f"/>
-          </svg>
+          <picture><source media="(prefers-color-scheme: dark)" srcset="/assets/logo/pritrek-mark-reverse.svg"><img class="logo" src="/assets/logo/pritrek-mark.svg" alt="" width="30" height="34"></picture>
           Pritrek
         </a>
         <span>Private Mileage Tracker</span>
